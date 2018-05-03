@@ -9,7 +9,7 @@ public class CalculationMethods {
 	public double EvouniqueInvestmentMain(double lastvalue,double strategyrate){
 		return lastvalue*(1+strategyrate);
 	}
-	public double sommation(double mainevoregularinvestment,double mainevouniqueinvestment) {
+	public double sum(double mainevoregularinvestment,double mainevouniqueinvestment) {
 		
 		return mainevoregularinvestment+mainevouniqueinvestment;
 	}

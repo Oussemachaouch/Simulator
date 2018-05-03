@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.Vermeg.entities.ComputedDataConfig;
 import com.Vermeg.entities.SimulationParams;
 import com.Vermeg.enumeration.ResultType;
+import com.Vermeg.enumeration.RulesValues;
 import com.Vermeg.services.CalculationMethods;
 
 @Service
@@ -78,14 +79,14 @@ public class Simulator {
 		if (CheckIfProvidedRulesExistInResultType(computedDataConfig))
 		{		
 			double iteration=computedDataConfig.getIterator();
-				
 			
 			Map<String,Double> map = new HashMap<>(computedDataConfig.getResultTypeMap());
 			
-		
 			while ( iteration <= simulationparameters.getDuration())
 		 	{
 	    	
+				//int positionUniquepremium=findpositionbyName("Unique premium");
+				
 				int positionEvoregularinvMain=findpositionbyName("Evo regular inv Main");
 				int positionEvouniqueinvMain=findpositionbyName("Evo unique inv Main");
 				int positionReserveMain=findpositionbyName("Reserve Main");
@@ -107,7 +108,8 @@ public class Simulator {
 				String ChargeRegulpremkey=ResultType.values()[positionChargeRegulprem].getDesc();
 				String Regularpremiumkey=ResultType.values()[positionRegularpremium].getDesc();
 				String ReservePSkey=ResultType.values()[positionReservePS].getDesc();
-			
+				//String Uniquepremiumkey=ResultType.values()[positionUniquepremium].getDesc();
+				
 			
 				double ruleEvo_regular_inv_Main =(map.get(EvoregularinvMainkey)+map.get(Pureregularinvkey))*(1+simulationparameters.getStrategyrate());
 			
@@ -115,15 +117,15 @@ public class Simulator {
 				
 				map.put(EvouniqueinvMainkey,calculationmethod.EvouniqueInvestmentMain(map.get(EvouniqueinvMainkey), simulationparameters.getStrategyrate()));
 	    	
-				map.put(ReserveMainkey,calculationmethod.sommation(map.get(EvoregularinvMainkey),map.get(EvouniqueinvMainkey)));
+				map.put(ReserveMainkey,calculationmethod.sum(map.get(EvoregularinvMainkey),map.get(EvouniqueinvMainkey)));
 				
 				map.put(EvoregularinvTOTkey,(map.get(EvoregularinvTOTkey)+map.get(Pureregularinvkey))*(1+simulationparameters.getStrategyrate()+simulationparameters.getPsrate()));
 	    	
 				map.put(EvouniqueinvTOTkey,map.get(EvouniqueinvTOTkey)*(1+simulationparameters.getStrategyrate()+simulationparameters.getPsrate()));
 	    	
-				map.put(ReserveTOTkey,calculationmethod.sommation(map.get(EvoregularinvTOTkey),map.get(EvouniqueinvTOTkey)));
+				map.put(ReserveTOTkey,calculationmethod.sum(map.get(EvoregularinvTOTkey),map.get(EvouniqueinvTOTkey)));
 	    	
-				map.put(Pureregularinvkey, calculationmethod.sommation(map.get(ChargeRegulpremkey),map.get(Regularpremiumkey)));
+				map.put(Pureregularinvkey, calculationmethod.sum(map.get(ChargeRegulpremkey),map.get(Regularpremiumkey)));
 	    	
 				map.put(ChargeRegulpremkey,calculationmethod.ChargeRegularPremuim(simulationparameters.getCommission(), map.get(Regularpremiumkey)));
 				
@@ -132,9 +134,8 @@ public class Simulator {
 				Map<String,Double> newresulttypemap = new HashMap<>(map);
 				
 				resultsofSimulation.add(newresulttypemap);
-	    	
-				//System.out.println(map);
-				//System.out.println();
+				
+				
 				iteration++;
 	    	
 		 	}

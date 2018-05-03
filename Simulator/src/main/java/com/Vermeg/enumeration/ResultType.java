@@ -13,6 +13,7 @@ public enum ResultType {
 	Reserve_TOT("Reserve TOT"),
 	Reserve_PS("Reserve PS"),
 	Charge_Regul_prem("Charge Regul prem"),
+	
 	Regular_premium("Regular premium");
 	
 	
