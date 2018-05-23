@@ -59,6 +59,29 @@ public class ConfigPropertyExtractor{
 		
 	return port;
 	} 
+	public int getInputSheetNumberValue() {
+		
+		int port=0;
+		Properties prop = new Properties();
+		String propFileName="Excel.properties";
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+		
+		if (inputStream != null)
+		{
+			try {
+				prop.load(inputStream);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String result = prop.getProperty("InputSheetNumber");
+			port = Integer.parseInt(prop.getProperty("InputSheetNumber"));
+		} else {
+			System.out.println("InputSheetNumber not found");
+		}
+	
+return port;
+} 
 
 
 }

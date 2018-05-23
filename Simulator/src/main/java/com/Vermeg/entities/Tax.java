@@ -1,7 +1,6 @@
 package com.Vermeg.entities;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,7 @@ public class Tax implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String taxname;
 	private double taxvalue;
 	
@@ -39,10 +38,10 @@ public class Tax implements Serializable{
 	public void setTaxvalue(double taxvalue) {
 		this.taxvalue = taxvalue;
 	}
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

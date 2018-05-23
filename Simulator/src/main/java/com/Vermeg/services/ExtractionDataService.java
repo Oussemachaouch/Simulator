@@ -2,23 +2,21 @@ package com.Vermeg.services;
 
 import java.io.File;
 import java.io.FileInputStream;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-
+import org.springframework.stereotype.Service;
 import com.Vermeg.entities.ComputedDataConfig;
+import com.Vermeg.entities.SimulationParameters;
 import com.Vermeg.enumeration.ResultType;
 
 
-
+@Service
 public class ExtractionDataService implements IExtractionDataService{
 
 	
@@ -49,7 +47,7 @@ public class ExtractionDataService implements IExtractionDataService{
 }
 	
 	@Override
-	public double GetNumericData(int row ,int column){
+	public double getNumericData(int row ,int column){
 	
 		
 		sheet1= wb.getSheetAt(property.getSheetNumberValue());
@@ -58,7 +56,34 @@ public class ExtractionDataService implements IExtractionDataService{
 	}
 	
 	@Override
-	public double GetIteration()
+	public double getInputNumericData(int row ,int column){
+	
+		
+		sheet1= wb.getSheetAt(property.getInputSheetNumberValue());
+		double data =sheet1.getRow(row).getCell(column).getNumericCellValue();
+		return data;
+	}
+	
+	@Override
+	public Date getInputDateData(int row ,int column){
+	
+		sheet1= wb.getSheetAt(property.getInputSheetNumberValue());
+		Date data =sheet1.getRow(row).getCell(column).getDateCellValue();
+		
+		return data;
+	}
+	
+	@Override
+	public String getInputStringData(int row ,int column){
+	
+		sheet1= wb.getSheetAt(property.getInputSheetNumberValue());
+		String data =sheet1.getRow(row).getCell(column).getStringCellValue();
+		
+		return data;
+	}
+	
+	@Override
+	public double getIteration()
 	{
 		
 	
@@ -81,7 +106,7 @@ public class ExtractionDataService implements IExtractionDataService{
 					int rowposition=cell.getRowIndex()+1;
 					int colomnposition=cell.getColumnIndex();
 					
-					return GetNumericData(rowposition,colomnposition);
+					return getNumericData(rowposition,colomnposition);
 				}
 		
 			}
@@ -91,8 +116,68 @@ public class ExtractionDataService implements IExtractionDataService{
 		return 0.0;
 	}
 	
+	/*@Override
+	public SimulationParameters getInput()
+	{
+		SimulationParameters simulationparameters = new SimulationParameters();
+	
+		sheet1= wb.getSheetAt(property.getInputSheetNumberValue());
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet1.rowIterator();
+
+		while (rows.hasNext())
+		{
+			row=(XSSFRow) rows.next();
+			Iterator cells = row.cellIterator();
+			
+			while (cells.hasNext())
+			{ 
+				cell=(XSSFCell) cells.next();
+		
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().equals("Commission"))
+				{
+					int rowposition=cell.getRowIndex();
+					int colomnposition=cell.getColumnIndex()+1;
+					
+					
+					 simulationparameters.setCommission(getInputNumericData(rowposition,colomnposition));
+				}
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().equals("Duration"))
+				{
+					int rowposition=cell.getRowIndex();
+					int colomnposition=cell.getColumnIndex()+1;
+					
+					
+					 simulationparameters.setDuration(getInputNumericData(rowposition,colomnposition));
+				}
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().equals("Date de naissance"))
+				{
+					int rowposition=cell.getRowIndex();
+					int colomnposition=cell.getColumnIndex()+1;
+					
+					simulationparameters.setDatedenaissance(getInputDateData(rowposition, colomnposition));
+				}
+				
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().equals("Gender"))
+				{
+					int rowposition=cell.getRowIndex();
+					int colomnposition=cell.getColumnIndex()+1;
+					
+					simulationparameters.setGender(getInputStringData(rowposition, colomnposition));
+				}
+				
+
+			}
+			
+		}
+	
+		return simulationparameters;
+	}
+	*/
+	
 	@Override
-	public Map<String,Double> GetData()
+	public Map<String,Double> getData()
 	{
 		Map<String,Double> ResultTypeMap =new HashMap<String,Double>();
 		
@@ -115,7 +200,7 @@ public class ExtractionDataService implements IExtractionDataService{
 					if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().equals(ResultType.values()[i].getDesc()))
 						{
 						
-						ResultTypeMap.put(cell.getStringCellValue(),GetNumericData( cell.getRowIndex(), cell.getColumnIndex()+1) );
+						ResultTypeMap.put(cell.getStringCellValue(),getNumericData( cell.getRowIndex(), cell.getColumnIndex()+1) );
 					
 						}
 				}
@@ -131,8 +216,8 @@ public class ExtractionDataService implements IExtractionDataService{
 	public ComputedDataConfig initialComputedDataConfig() {
 	
 		ComputedDataConfig computeddataconfig = new ComputedDataConfig();
-		computeddataconfig.setIterator(GetIteration());
-		computeddataconfig.setResultTypeMap(GetData());
+		computeddataconfig.setIterator(getIteration());
+		computeddataconfig.setResultTypeMap(getData());
 		return computeddataconfig;
 	}
 	}

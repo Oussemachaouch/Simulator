@@ -1,41 +1,78 @@
 package com.Vermeg.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.DecimalMax;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class SimulationParameters implements Serializable {
 	
-
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	@NotNull
 	private int duration;
-	private double taxes;
-	@DecimalMax("100")
-	private double rates;
-	public long getId() {
-		return id;
-	}
+	
+	private int periodicity;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="datedenaissance")
+	private Date date;
+	
+	private double annualpremuim;
+	
+	@OneToOne
+	private FinancialInstrument financialinstrument;
 	
 	
-	
+
 	public SimulationParameters() {
 		super();
 	}
 
 
-	public SimulationParameters(@NotNull int duration, double taxes, @DecimalMax("100") double rates) {
-		super();
-		this.duration = duration;
-		this.taxes = taxes;
-		this.rates = rates;
+
+	public long getId() {
+		return id;
+	}
+
+
+
+	public int getDuration() {
+		return duration;
+	}
+
+
+
+	public int getPeriodicity() {
+		return periodicity;
+	}
+
+
+
+	public Date getDatedenaissance() {
+		return date;
+	}
+
+
+
+	public double getAnnualpremuim() {
+		return annualpremuim;
+	}
+
+
+	
+	public FinancialInstrument getFinancialinstrument() {
+		return financialinstrument;
 	}
 
 
@@ -43,25 +80,50 @@ public class SimulationParameters implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public int getDuration() {
-		return duration;
-	}
+
+
+
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	public double getTaxes() {
-		return taxes;
+
+
+
+	public void setPeriodicity(int periodicity) {
+		this.periodicity = periodicity;
 	}
-	public void setTaxes(double taxes) {
-		this.taxes = taxes;
+
+
+
+	public void setDatedenaissance(Date datedenaissance) {
+		this.date = datedenaissance;
 	}
-	public double getRates() {
-		return rates;
+
+
+
+	public void setAnnualpremuim(double annualpremuim) {
+		this.annualpremuim = annualpremuim;
 	}
-	public void setRates(double rates) {
-		this.rates = rates;
+
+
+
+	public void setFinancialinstrument(FinancialInstrument financialinstrument) {
+		this.financialinstrument = financialinstrument;
 	}
+
+
+
+	public SimulationParameters(@NotNull int duration, int periodicity, Date date, double annualpremuim,
+			FinancialInstrument financialinstrument) {
+		super();
+		this.duration = duration;
+		this.periodicity = periodicity;
+		this.date = date;
+		this.annualpremuim = annualpremuim;
+		this.financialinstrument = financialinstrument;
+	}
+	
+	
 	
 
-	
 }

@@ -2,7 +2,6 @@ package com.Vermeg.entities;
 
 
 import java.io.Serializable;
-
 import javax.persistence.Embeddable;
 
 @Embeddable
